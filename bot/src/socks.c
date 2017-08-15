@@ -25,7 +25,6 @@ failure:
 	return -1;
 }
 
-// Currently without any authentication.
 bool negotiate_with_proxy(int s)
 {
 	uint8_t negotiate_request[3] = {0x5,  // SOCKS version.
@@ -59,7 +58,6 @@ bool send_connect_command(int s, struct sockaddr_in* remote)
 
 	if (send(s, connect_request, sizeof(connect_request), 0) < 0) return false;
 
-	
 	if ((number_of_read_bytes = recv(s, reply, sizeof(reply), 0)) <= 0) return false;	
 
 	if (reply[0] != 0x5 || 
